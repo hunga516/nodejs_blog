@@ -1,6 +1,16 @@
+const toObject = require("../../utils/mongoose");
+const course = require("../models/Course");
+const Course = require("../models/Course");
+
+
 class SiteController {
-    index(req, res) {
-        res.render('news');
+    async index(req, res, next) {
+        Course.find({})
+            .then(courses => {
+                courses = toObject(courses)
+                res.render("home", { courses })
+            })
+            .catch(next)
     }
 
     search(req, res) {
