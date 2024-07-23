@@ -7,6 +7,12 @@ const port = 3000;
 const route = require('./routes');
 const db = require('./config/db');
 
+// Middleware để xử lý dữ liệu form
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware để xử lý dữ liệu JSON
+app.use(express.json());
+
 // Connect to database
 db.Connect();
 
