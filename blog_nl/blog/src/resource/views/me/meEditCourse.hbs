@@ -1,7 +1,8 @@
-<form method="POST" action="/courses/store">
+<form method="POST" action="/me/courses/store">
   <div class="mb-3">
     <label for="name" class="form-label">Ten khoa hoc</label>
     <input
+      value="{{course.name}}"
       type="text"
       class="form-control"
       id="name"
@@ -9,6 +10,7 @@
     />
     <label for="description" class="form-label">Mo ta khoa hoc</label>
     <input
+      value="{{course.description}}"
       type="text"
       class="form-control"
       id="description"
@@ -16,10 +18,11 @@
     />
     <label for="images" class="form-label">Images</label>
     <input
+      value="{{course.images}}"
       type="text"
       class="form-control"
       id="images"
       name="images"
     />
-  <button type="submit" class="btn btn-primary">Them khoa hoc</button>
+  <button type="submit" class="btn btn-primary">Luu lai</button>
 </form>

@@ -28,7 +28,7 @@ class CoursesController {
     store(req, res, next) {
         Course.create(req.body)
             .then(course => {
-                res.redirect(`/courses/${req.body.slug}`)
+                res.redirect(`/courses/${course.slug}`)
             })
             .catch(next)
     }
