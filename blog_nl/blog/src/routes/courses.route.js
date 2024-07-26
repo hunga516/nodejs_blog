@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const coursesController = require('../app/controllers/CoursesController');
 
-router.use('/create', coursesController.create)
-router.use('/store', coursesController.store)
-router.use('/:slug', coursesController.detail);
-router.use('/', coursesController.index);
+router.get('/create', coursesController.create)
+router.post('/create/store', coursesController.store)
+router.get('/detail/:slug', coursesController.detail);
+router.get('/', coursesController.index);
 
 module.exports = router;

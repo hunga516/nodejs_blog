@@ -2,10 +2,14 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const { engine } = require('express-handlebars');
+const methodOverride = require('method-override')
 const app = express();
 const port = 3000;
 const route = require('./routes');
 const db = require('./config/db');
+
+//Method POST Override
+app.use(methodOverride('_method'))
 
 // Middleware để xử lý dữ liệu form
 app.use(express.urlencoded({ extended: true }));

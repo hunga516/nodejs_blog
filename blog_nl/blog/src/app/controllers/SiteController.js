@@ -7,7 +7,7 @@ class SiteController {
     async index(req, res, next) {
         Course.find({})
             .then(courses => {
-                courses = toObject(courses)
+                courses = toObject.mutipleMongooseToObject(courses)
                 res.render("home", { courses })
             })
             .catch(next)

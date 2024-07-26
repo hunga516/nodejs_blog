@@ -14,7 +14,7 @@ class MeController {
             .catch(next)
     }
 
-    // [GET] /me/editCourse/:slug
+    // [GET] /me/courses/edit/:id
     async meEditCourse(req, res, next) {
         Course.findById({ _id: req.params.id })
             .then(course => {
@@ -24,14 +24,16 @@ class MeController {
             })
             .catch(next)
     }
-
-    async store(req, res, next) {
-        Course.findById({ _id: req.params.id })
-            .then(course => {
-                res.render(`me/meEditCourse`, {
-                    course: singleMongooseToObject(course)
-                })
-            })
+    // [PUT] /me/courses/edit/store/:id
+    async storeEditCourse(req, res, next) {
+        Course.updateOne({ _id: req.params.id }, req.body)
+            .then(course => res.redirect('/me/courses'))
+            .catch(next)
+    }
+    // [DELETE] /me/courses/delete/:id
+    async deleteCourse(req, res, next) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(course => res.redirect('/me/courses'))
             .catch(next)
     }
 }

@@ -24,13 +24,15 @@ class CoursesController {
     create(req, res) {
         res.render("courses/createCourse")
     }
-    // [GET] /courses/store
-    store(req, res, next) {
-        Course.create(req.body)
-            .then(course => {
-                res.redirect(`/courses/${course.slug}`)
-            })
-            .catch(next)
+    // [POST] /courses/store
+    async store(req, res, next) {
+        const course = req.body
+        if (course.images === '') {
+            course.images = undefined
+        }
+
+        Course.create(course)
+            .then(course => res.redirect('/me/courses'))
     }
 }
 
