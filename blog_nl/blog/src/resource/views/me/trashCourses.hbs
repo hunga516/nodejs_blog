@@ -19,7 +19,7 @@
       <td>{{this.createdAt}}</td>
       <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
       <td>
-        <a href="/me/courses/restore/{{this._id}}">
+        <a class="btnRestore" data-id="{{this._id}}">
           Khôi phục
         </a>
         <a class="btn-delete" data-id="{{this._id}}">
@@ -99,6 +99,7 @@
 
 <script>
   const btnDelete = document.querySelectorAll('.btn-delete');
+  const btnRestore = document.querySelectorAll('.btnRestore')
   const deleteModal = document.getElementById('deleteModal');
   const spanComfirmDelete = document.getElementById('spanComfirmDelete')
   const deleteForm = document.forms['deleteForm']
@@ -119,6 +120,16 @@
       spanComfirmDelete.textContent += dataId
     });
   });
+
+  btnRestore.forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault()
+      dataId = e.target.getAttribute('data-id')
+      restoreForm.action = `/me/courses/restore/${dataId}?_method=PATCH`
+      restoreForm.method = 'POST'
+      restoreForm.submit()
+    })
+  })
 
   function closeModal() {
     const modalDelete = document.getElementById('deleteModal');
