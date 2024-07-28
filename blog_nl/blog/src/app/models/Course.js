@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const slug = require('mongoose-slug-generator');
-mongoose.plugin(slug);
+const mongooseDelete = require('mongoose-delete');
 
 const Schema = mongoose.Schema;
 
-const Course = new Schema({
+const CourseSchema = new Schema({
     name: { type: String, default: "Default name" },
     description: { type: String, default: "Default description" },
     images: { type: String, default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC5V5g68dTYlES7tgY55eWdnJSChHU27m1kg&s" }
@@ -13,4 +13,12 @@ const Course = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Course', Course);
+//Add plugins
+mongoose.plugin(slug);
+CourseSchema.plugin(mongooseDelete, {
+    overrideMethods: 'all',
+    deletedAt: true,
+    deletedBy: true
+});
+
+module.exports = mongoose.model('Course', CourseSchema);

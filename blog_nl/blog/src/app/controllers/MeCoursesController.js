@@ -32,9 +32,26 @@ class MeController {
     }
     // [DELETE] /me/courses/delete/:id
     async deleteCourse(req, res, next) {
-        Course.deleteOne({ _id: req.params.id })
-            .then(course => res.redirect('/me/courses'))
+        Course.delete({ _id: req.params.id })
+            .then(course => res.redirect('back'))
             .catch(next)
+    }
+
+    trash(req, res, next) {
+        Course.findDeleted()
+            .then(courses => res.render('me/trashCourses', {
+                courses: mutipleMongooseToObject(courses)
+            }))
+    }
+
+    forceDeleteCourse(req, res, next) {
+        Course.deleteOne({ _id: req.params.id })
+            .then(course => res.redirect('back'))
+    }
+
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .then(course => res.redirect('back'))
     }
 }
 
