@@ -125,6 +125,8 @@
     button.addEventListener('click', function (e) {
       e.preventDefault()
       dataId = e.target.getAttribute('data-id')
+
+      console.log(dataId)
       restoreForm.action = `/me/courses/restore/${dataId}?_method=PATCH`
       restoreForm.method = 'POST'
       restoreForm.submit()

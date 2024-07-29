@@ -37,21 +37,22 @@ class MeController {
             .catch(next)
     }
 
-    trash(req, res, next) {
-        Course.findDeleted()
+    async trash(req, res, next) {
+        Course.findWithDeleted({ deleted: true })
             .then(courses => res.render('me/trashCourses', {
                 courses: mutipleMongooseToObject(courses)
             }))
     }
 
-    forceDeleteCourse(req, res, next) {
+    async forceDeleteCourse(req, res, next) {
         Course.deleteOne({ _id: req.params.id })
             .then(course => res.redirect('back'))
     }
 
-    restore(req, res, next) {
+    async restore(req, res, next) {
         Course.restore({ _id: req.params.id })
             .then(course => res.redirect('back'))
+            .catch(next)
     }
 }
 
