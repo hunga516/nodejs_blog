@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon --inspect src/index.js",
-    "watch": "NODE_ENV=production postcss --watch src/public/style/tailwind.css -o src/public/style/tailwindOutput.css",
+    "watch": "npx tailwindcss -i src/public/style/tailwind.css -o src/public/style/tailwindOutput.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -46,8 +46,9 @@
     "prettier": "^3.3.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "morgan": "^1.10.0",
-    "postcss": "^8.4.39",
+    "postcss": "^8.4.40",
     "postcss-cli": "^11.0.0",
     "tailwindcss": "^3.4.4"
   }

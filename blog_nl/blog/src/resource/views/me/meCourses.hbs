@@ -5,8 +5,18 @@
       Thùng rác ({{deletedCount}})
     </a>
   </h1>
+  <div class="actionFrom w-full flex items-center gap-2">
+    <input type="checkbox" id="checkbox-all" />
+    <label for="checkbox-all">Chọn tất cả</label>
+    <select name="" id="" class="ring-1 ring-inset ring-black rounded-md">
+      <option>-- Chọn hành động --</option>
+      <option value="delete">Xoá</option>
+    </select>
+    <button class="buttonAction bg-red-600 rounded-md text-white p-1">Thực hiện</button>
+  </div>
   <thead>
     <tr>
+      <th scope="col"></th>
       <th scope="col">#</th>
       <th scope="col">Ten</th>
       <th scope="col">Mo ta</th>
@@ -18,6 +28,9 @@
   <tbody>
     {{#each courses}}
     <tr>
+      <td>
+        <input type="checkbox" id="" name="courseIds[]" value="{{this._id}}" />
+      </td>
       <th scope="row">{{@index}}</th>
       <td>{{this.name}}</td>
       <td>{{this.description}}</td>
@@ -108,8 +121,10 @@
 <script>
   const btnDelete = document.querySelectorAll('.btn-delete');
   const deleteModal = document.getElementById('deleteModal');
-  const spanComfirmDelete = document.getElementById('spanComfirmDelete')
-  const deleteForm = document.forms['deleteForm']
+  const spanComfirmDelete = document.getElementById('spanComfirmDelete');
+  const deleteForm = document.forms['deleteForm'];
+  const checkboxAll = document.querySelectorAll('#checkbox-all');
+  const courseItemCheckBox = document.querySelectorAll('input[name="courseIds[]"]');
 
   var dataId;
 
@@ -119,21 +134,35 @@
       deleteModal.classList.remove('hidden');
 
       //get id course
-      dataId = event.target.getAttribute('data-id')
+      dataId = event.target.getAttribute('data-id');
 
       //update span comfirm delete
-      spanComfirmDelete.textContent += dataId
+      spanComfirmDelete.textContent = `Are you sure you want to delete course ${dataId}?`;
     });
   });
 
   function closeModal() {
     const modalDelete = document.getElementById('deleteModal');
-    modalDelete.classList.add('hidden')
+    modalDelete.classList.add('hidden');
   }
 
   function submitDelete() {
-    deleteForm.action = `/me/courses/delete/${dataId}?_method=DELETE`
-    deleteForm.method = 'POST'
-    deleteForm.submit()
+    deleteForm.action = `/me/courses/delete/${dataId}?_method=DELETE`;
+    deleteForm.method = 'POST';
+    deleteForm.submit();
   }
+
+  checkboxAll.forEach(checkbox => {
+    checkbox.addEventListener('click', e => {
+      var isCheckedAll = checkbox.checked
+
+      if (isCheckedAll) {
+        courseItemCheckBox.forEach(item => {
+          item.checked = isCheckedAll
+        })
+      }
+    });
+  });
+
+
 </script>
