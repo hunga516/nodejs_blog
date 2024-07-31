@@ -1,4 +1,4 @@
-<form>
+<form name="container-form" method="POST" action="/courses/handle-form-action">
   <table class="table">
     <h1>Thùng rác</h1>
     <div class="actionForm flex items-center justify-between">
@@ -7,7 +7,7 @@
         <label for="checkAll">Chọn tất cả</label>
         <select name="action" id="">
           <option value="">-- Chọn hành động --</option>
-          <option value="delete">Xoá</option>
+          <option value="forceDelete">Xoá</option>
           <option value="restore">Khôi phục</option>
         </select>
       </div>
@@ -122,6 +122,8 @@
   const spanComfirmDelete = document.getElementById('spanComfirmDelete')
   const deleteForm = document.forms['deleteForm']
   const restoreForm = document.forms['restoreForm']
+  const checkAllCheckbox = document.getElementById('checkAll')
+  const courseItemCheckBox = document.querySelectorAll('input[name="courseIds[]"]')
 
 
   var dataId;
@@ -148,6 +150,19 @@
       restoreForm.action = `/me/courses/restore/${dataId}?_method=PATCH`
       restoreForm.method = 'POST'
       restoreForm.submit()
+    })
+  })
+
+  checkAllCheckbox.addEventListener('click', e => {
+    courseItemCheckBox.forEach(item => {
+      item.checked = e.target.checked
+    })
+  })
+
+  courseItemCheckBox.forEach(item => {
+    item.addEventListener('click', e => {
+      var isCheckedAll = courseItemCheckBox.length === document.querySelectorAll('input[name="courseIds[]"]:checked').length
+      checkAllCheckbox.checked = isCheckedAll
     })
   })
 
