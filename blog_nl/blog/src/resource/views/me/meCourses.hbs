@@ -1,63 +1,65 @@
-<table class="table">
-  <h1>Khoá học</h1>
-  <h1>
-    <a href="/me/courses/trash">
-      Thùng rác ({{deletedCount}})
-    </a>
-  </h1>
-  <div class="actionFrom w-full flex items-center justify-between gap-2 h-[32px]">
-    <div class="">
-      <input type="checkbox" id="checkbox-all" />
-      <label for="checkbox-all" class="flex-none">Chọn tất cả</label>
-      <select name="" id="" class="ring-1 ring-inset ring-black rounded-md p-1 ">
-        <option>-- Chọn hành động --</option>
-        <option value="delete">Xoá</option>
-      </select>
+<form name="container-form" method="POST" action="/courses/handle-form-action">
+  <table class="table">
+    <h1>Khoá học</h1>
+    <h1>
+      <a href="/me/courses/trash">
+        Thùng rác ({{deletedCount}})
+      </a>
+    </h1>
+    <div class="actionFrom w-full flex items-center justify-between gap-2 h-[32px]">
+      <div class="">
+        <input type="checkbox" id="checkbox-all" />
+        <label for="checkbox-all" class="flex-none">Chọn tất cả</label>
+        <select name="action" id="" class="ring-1 ring-inset ring-black rounded-md p-1" required>
+          <option value="">-- Chọn hành động --</option>
+          <option value="delete">Xoá</option>
+        </select>
+      </div>
+      <button class="actionBtn opacity-50 justify-items-end bg-red-600 rounded-md text-white px-1 py-0.5">Thực
+        hiện</button>
     </div>
-    <button class="actionBtn justify-items-end hidden bg-red-600 rounded-md text-white px-1 py-0.5">Thực hiện</button>
-  </div>
-  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col">#</th>
-      <th scope="col">Ten</th>
-      <th scope="col">Mo ta</th>
-      <th scope="col">Ngay tao</th>
-      <th scope="col">Avatar</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each courses}}
-    <tr>
-      <td>
-        <input type="checkbox" id="" name="courseIds[]" value="{{this._id}}" />
-      </td>
-      <th scope="row">{{@index}}</th>
-      <td>{{this.name}}</td>
-      <td>{{this.description}}</td>
-      <td>{{this.createdAt}}</td>
-      <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
-      <td>
-        <a href="/me/courses/edit/{{this._id}}">
-          Edit
-        </a>
-        <a class="btn-delete" data-id="{{this._id}}">
-          Remove
-        </a>
-      </td>
-    </tr>
-    {{else}}
-    <tr>
-      <td colspan="6">
-        <h1>Bạn chưa đăng khoá học nào. </h1>
-        <a href="/courses/create">Đăng khoá học</a>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-
-</table>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">#</th>
+        <th scope="col">Ten</th>
+        <th scope="col">Mo ta</th>
+        <th scope="col">Ngay tao</th>
+        <th scope="col">Avatar</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each courses}}
+      <tr>
+        <td>
+          <input type="checkbox" id="" name="courseIds[]" value="{{this._id}}" />
+        </td>
+        <th scope="row">{{@index}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.createdAt}}</td>
+        <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
+        <td>
+          <a href="/me/courses/edit/{{this._id}}">
+            Edit
+          </a>
+          <a class="btn-delete" data-id="{{this._id}}">
+            Remove
+          </a>
+        </td>
+      </tr>
+      {{else}}
+      <tr>
+        <td colspan="6">
+          <h1>Bạn chưa đăng khoá học nào. </h1>
+          <a href="/courses/create">Đăng khoá học</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</form>
 
 {{!-- hidden form delete --}}
 <form name="deleteForm"></form>
@@ -176,11 +178,19 @@
     var checkCount = document.querySelectorAll('input[name="courseIds[]"]:checked').length
 
     if (checkCount > 0) {
-      actionBtn.classList.remove('hidden')
+      actionBtn.classList.remove('opacity-50')
     } else {
-      actionBtn.classList.add('hidden')
+      actionBtn.classList.add('opacity-50')
     }
   }
+
+  actionBtn.addEventListener('click', e => {
+    var checkCount = document.querySelectorAll('input[name="courseIds[]"]:checked').length
+
+    if (!checkCount) {
+      e.preventDefault()
+    }
+  })
 
 
 

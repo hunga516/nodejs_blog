@@ -1,36 +1,54 @@
-<table class="table">
-  <h1>Thùng rác</h1>
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Ten</th>
-      <th scope="col">Mo ta</th>
-      <th scope="col">Ngay tao</th>
-      <th scope="col">Avatar</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each courses}}
-    <tr>
-      <th scope="row">{{@index}}</th>
-      <td>{{this.name}}</td>
-      <td>{{this.description}}</td>
-      <td>{{this.createdAt}}</td>
-      <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
-      <td>
-        <a class="btnRestore" data-id="{{this._id}}">
-          Khôi phục
-        </a>
-        <a class="btn-delete" data-id="{{this._id}}">
-          Xoá vĩnh viễn
-        </a>
-        </form>
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
+<form>
+  <table class="table">
+    <h1>Thùng rác</h1>
+    <div class="actionForm flex items-center justify-between">
+      <div class="container-action">
+        <input type="checkbox" id="checkAll">
+        <label for="checkAll">Chọn tất cả</label>
+        <select name="action" id="">
+          <option value="">-- Chọn hành động --</option>
+          <option value="delete">Xoá</option>
+          <option value="restore">Khôi phục</option>
+        </select>
+      </div>
+      <button type="submit" class="p-1 bg-red-500 opacity-50 text-white rounded-md">Thực hiện</button>
+    </div>
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">#</th>
+        <th scope="col">Ten</th>
+        <th scope="col">Mo ta</th>
+        <th scope="col">Ngay tao</th>
+        <th scope="col">Avatar</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each courses}}
+      <tr>
+        <td>
+          <input type="checkbox" name="courseIds[]" value="{{this._id}}" />
+        </td>
+        <th scope="row">{{@index}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.createdAt}}</td>
+        <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
+        <td>
+          <a class="btnRestore" data-id="{{this._id}}">
+            Khôi phục
+          </a>
+          <a class="btn-delete" data-id="{{this._id}}">
+            Xoá vĩnh viễn
+          </a>
+</form>
+</td>
+</tr>
+{{/each}}
+</tbody>
 </table>
+</form>
 
 {{!-- hidden form delete --}}
 <form name="deleteForm"></form>

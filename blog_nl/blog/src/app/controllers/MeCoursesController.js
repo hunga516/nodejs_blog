@@ -5,12 +5,14 @@ const { mutipleMongooseToObject, singleMongooseToObject } = require('../../utils
 class MeController {
     // [GET] /me/courses
     async meCourses(req, res, next) {
-
-        Promise.all([Course.find({}), Course.countDocumentsDeleted()])
-            .then(([courses, deletedCount]) => res.render('me/meCourses', {
-                deletedCount,
-                courses: mutipleMongooseToObject(courses)
-            }))
+        Promise.all([Course.find({}), Course.countDocumentsWithDeleted({ deleted: true })])  //plugin mongoose-soft-delete method
+            .then(([courses, deletedCount]) => {
+                console.log(deletedCount)
+                res.render('me/meCourses', {
+                    deletedCount,
+                    courses: mutipleMongooseToObject(courses)
+                })
+            })
             .catch(next)
     }
 
