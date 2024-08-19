@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import meCoursesController from '../app/controllers/MeCoursesController.js'; // Đổi extension sang .js nếu cần
+
 const router = express.Router();
-const meCoursesController = require('../app/controllers/MeCoursesController');
 
 router.get('/courses', meCoursesController.meCourses);
 router.get('/courses/edit/:id', meCoursesController.meEditCourse);
@@ -10,8 +11,4 @@ router.get('/courses/trash', meCoursesController.trash);
 router.delete('/courses/forceDelete/:id', meCoursesController.forceDeleteCourse);
 router.patch('/courses/restore/:id', meCoursesController.restore);
 
-
-
-
-
-module.exports = router;
+export default router;

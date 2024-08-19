@@ -1,61 +1,83 @@
-const toObject = require("../../utils/mongoose");
-const Course = require('../models/Course')
-const { mutipleMongooseToObject, singleMongooseToObject } = require('../../utils/mongoose')
+import Course from '../models/Course.js'; // Đổi extension sang .js nếu cần
+import { mutipleMongooseToObject, singleMongooseToObject } from '../../utils/mongoose.js'; // Đổi extension sang .js nếu cần
 
 class MeController {
     // [GET] /me/courses
     async meCourses(req, res, next) {
-        Promise.all([Course.find({}), Course.countDocumentsWithDeleted({ deleted: true })])  //plugin mongoose-soft-delete method
-            .then(([courses, deletedCount]) => {
-                res.render('me/meCourses', {
-                    deletedCount,
-                    courses: mutipleMongooseToObject(courses)
-                })
-            })
-            .catch(next)
+        try {
+            const [courses, deletedCount] = await Promise.all([
+                Course.find({}),
+                Course.countDocumentsWithDeleted({ deleted: true }) //plugin mongoose-soft-delete method
+            ]);
+            res.render('me/meCourses', {
+                deletedCount,
+                courses: mutipleMongooseToObject(courses)
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
     // [GET] /me/courses/edit/:id
     async meEditCourse(req, res, next) {
-        Course.findById({ _id: req.params.id })  //original method
-            .then(course => {
-                res.render(`me/meEditCourse`, {
-                    course: singleMongooseToObject(course)
-                })
-            })
-            .catch(next)
+        try {
+            const course = await Course.findById({ _id: req.params.id }); //original method
+            res.render('me/meEditCourse', {
+                course: singleMongooseToObject(course)
+            });
+        } catch (error) {
+            next(error);
+        }
     }
+
     // [PUT] /me/courses/edit/store/:id
     async storeEditCourse(req, res, next) {
-        Course.updateOne({ _id: req.params.id }, req.body)  //original method
-            .then(course => res.redirect('/me/courses'))
-            .catch(next)
+        try {
+            await Course.updateOne({ _id: req.params.id }, req.body); //original method
+            res.redirect('/me/courses');
+        } catch (error) {
+            next(error);
+        }
     }
+
     // [DELETE] /me/courses/delete/:id
     async deleteCourse(req, res, next) {
-        Course.delete({ _id: req.params.id })    //plugin mongoose-soft-delete method
-            .then(course => res.redirect('back'))
-            .catch(next)
+        try {
+            await Course.delete({ _id: req.params.id }); //plugin mongoose-soft-delete method
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
 
     async trash(req, res, next) {
-        Course.findWithDeleted({ deleted: true }) //all course can use
-            .then(courses => res.render('me/trashCourses', {
+        try {
+            const courses = await Course.findWithDeleted({ deleted: true }); //all course can use
+            res.render('me/trashCourses', {
                 courses: mutipleMongooseToObject(courses)
-            }))
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 
     async forceDeleteCourse(req, res, next) {
-        Course.deleteOne({ _id: req.params.id }) //original method
-            .then(course => res.redirect('back'))
+        try {
+            await Course.deleteOne({ _id: req.params.id }); //original method
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
 
     async restore(req, res, next) {
-        Course.restore({ _id: req.params.id }) //plugin mongoose-soft-delete method
-            .then(course => res.redirect('back'))
-            .catch(next)
+        try {
+            await Course.restore({ _id: req.params.id }); //plugin mongoose-soft-delete method
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
-
 }
 
-module.exports = new MeController();
+export default new MeController();

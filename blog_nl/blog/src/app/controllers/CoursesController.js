@@ -1,62 +1,70 @@
-const toObject = require("../../utils/mongoose");
-const Course = require('../models/Course')
-const { mutipleMongooseToObject, singleMongooseToObject } = require('../../utils/mongoose')
+import Course from '../models/Course.js'; // Đổi extension sang .js nếu cần
+import { mutipleMongooseToObject, singleMongooseToObject } from '../../utils/mongoose.js'; // Đổi extension sang .js nếu cần
 
 class CoursesController {
     // [GET] /courses
     async index(req, res, next) {
-        Course.find({})
-            .then(courses => {
-                res.render("courses/courses", { courses: mutipleMongooseToObject(courses) })
-            })
-            .catch(next)
+        try {
+            const courses = await Course.find({});
+            res.render("courses/courses", { courses: mutipleMongooseToObject(courses) });
+        } catch (error) {
+            next(error);
+        }
     }
+
     // [GET] /courses/:slug
     async detail(req, res, next) {
-        Course.findOne({ slug: req.params.slug })
-            .then(course => {
-                res.render('courses/detailCourse', { course: singleMongooseToObject(course) })
-                console.log(course);
-            })
-            .catch(next)
+        try {
+            const course = await Course.findOne({ slug: req.params.slug });
+            res.render('courses/detailCourse', { course: singleMongooseToObject(course) });
+            console.log(course);
+        } catch (error) {
+            next(error);
+        }
     }
+
     // [GET] /courses/create
     create(req, res) {
-        res.render("courses/createCourse")
+        res.render("courses/createCourse");
     }
+
     // [POST] /courses/store
     async store(req, res, next) {
-        const course = req.body
-        if (course.images === '') {
-            course.images = undefined
+        try {
+            const course = req.body;
+            if (course.images === '') {
+                course.images = undefined;
+            }
+            await Course.create(course);
+            res.redirect('/me/courses');
+        } catch (error) {
+            next(error);
         }
-
-        Course.create(course)
-            .then(course => res.redirect('/me/courses'))
     }
 
     async handleFormAction(req, res, next) {
-        switch (req.body.action) {
-            case 'delete':
-                Course.delete({ _id: { $in: req.body.courseIds } })
-                    .then(course => res.redirect('back'))
-                    .catch(next)
-                break;
-            case 'restore':
-                Course.restore({ _id: { $in: req.body.courseIds } })
-                    .then(course => res.redirect('back'))
-                    .catch(next)
-                break;
-            case 'forceDelete':
-                Course.deleteMany({ _id: { $in: req.body.courseIds } })
-                    .then(course => res.redirect('back'))
-                    .catch(next)
-                break;
-            default:
-                res.json('Invalid action!!!')
-                break;
+        try {
+            switch (req.body.action) {
+                case 'delete':
+                    await Course.delete({ _id: { $in: req.body.courseIds } });
+                    res.redirect('back');
+                    break;
+                case 'restore':
+                    await Course.restore({ _id: { $in: req.body.courseIds } });
+                    res.redirect('back');
+                    break;
+                case 'forceDelete':
+                    await Course.deleteMany({ _id: { $in: req.body.courseIds } });
+                    res.redirect('back');
+                    break;
+                default:
+                    res.json('Invalid action!!!');
+                    break;
+            }
+        } catch (error) {
+            next(error);
         }
     }
 }
 
-module.exports = new CoursesController();
+export default new CoursesController();
