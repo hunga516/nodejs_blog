@@ -7,7 +7,6 @@ class MeController {
     async meCourses(req, res, next) {
         Promise.all([Course.find({}), Course.countDocumentsWithDeleted({ deleted: true })])  //plugin mongoose-soft-delete method
             .then(([courses, deletedCount]) => {
-                console.log(deletedCount)
                 res.render('me/meCourses', {
                     deletedCount,
                     courses: mutipleMongooseToObject(courses)

@@ -42,3 +42,20 @@ route(app);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+app.get('/test',
+    function (req, res, next) {
+        if (['vethuong', 'vevip'].includes(req.query.ve)) {
+            req.query.add = "added"
+            return next()
+        }
+        return res.status(403).json({
+            messages: "failed"
+        })
+    },
+    function (req, res, next) {
+        res.json({
+            messages: "test",
+            add: req.query.add
+        })
+    })

@@ -33,7 +33,7 @@
       {{#each courses}}
       <tr>
         <td>
-          <input type="checkbox" id="" name="courseIds[]" value="{{this._id}}" />
+          <input type="checkbox" name="courseIds[]" value="{{this._id}}" />
         </td>
         <th scope="row">{{@index}}</th>
         <td>{{this.name}}</td>
@@ -167,7 +167,6 @@
   courseItemCheckBox.forEach(item => {
     item.addEventListener('click', e => {
       var isCheckedAll = courseItemCheckBox.length === document.querySelectorAll('input[name="courseIds[]"]:checked').length;
-      console.log(isCheckedAll)
 
       checkboxAll.checked = isCheckedAll
       renderSubmitActionBtn()

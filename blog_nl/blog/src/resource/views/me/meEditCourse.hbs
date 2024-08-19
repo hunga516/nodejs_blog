@@ -6,7 +6,7 @@
     <input value="{{course.description}}" type="text" class="form-control" id="inputDescription" name="description" />
     <label for="images" class="form-label">Images</label>
     <input value="{{course.images}}" type="text" class="form-control" id="inputImages" name="images" />
-    <button id="deleteBtn" class="btn btn-primary">Luu lai</button>
+    <button id="editBtn" class="btn btn-primary">Luu lai</button>
 </form>
 
 {{!-- Delete Modal --}}
@@ -74,16 +74,14 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const editForm = document.forms['editForm'];
-    const deleteBtn = document.getElementById('deleteBtn');
+    const editBtn = document.getElementById('editBtn');
     const editModal = document.getElementById('editModal');
     const inputName = document.getElementById('inputName');
     const inputDescription = document.getElementById('inputDescription');
     const spanNameComfirm = document.getElementById('spanNameComfirm');
     const spanDescriptionComfirm = document.getElementById('spanDescriptionComfirm');
 
-    console.log(spanNameComfirm); // Xuất ra giá trị hợp lệ sau khi DOM đã tải
-
-    deleteBtn.addEventListener('click', function (event) {
+    editBtn.addEventListener('click', function (event) {
       event.preventDefault();
       editModal.classList.remove('hidden');
       spanNameComfirm.textContent = inputName.value;

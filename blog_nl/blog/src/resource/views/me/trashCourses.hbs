@@ -36,9 +36,9 @@
         <td>{{this.createdAt}}</td>
         <td><img src="{{this.images}}" alt="Avatar" style="width: 100px; height: auto;" /></td>
         <td>
-          <a class="btnRestore" data-id="{{this._id}}">
+          <button class="btnRestore" data-id="{{this._id}}">
             Khôi phục
-          </a>
+          </button>
           <a class="btn-delete" data-id="{{this._id}}">
             Xoá vĩnh viễn
           </a>
@@ -146,7 +146,6 @@
       e.preventDefault()
       dataId = e.target.getAttribute('data-id')
 
-      console.log(dataId)
       restoreForm.action = `/me/courses/restore/${dataId}?_method=PATCH`
       restoreForm.method = 'POST'
       restoreForm.submit()
