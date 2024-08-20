@@ -9,10 +9,10 @@ import morgan from 'morgan';
 import { engine } from 'express-handlebars';
 import methodOverride from 'method-override';
 
-const app = express();
 const port = 3000;
-const route = import('./routes/index.js');
-const db = import('./config/db/index.js');
+import route from './routes/index.js'
+import Connect from './config/db/index.js';
+const app = express();
 
 // Method POST Override
 app.use(methodOverride('_method'));
@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Connect to database
-db.then(module => module.default.Connect());
+Connect();
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,7 +44,7 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resource', 'views'));
 
 // Routes init
-route.then(module => module.default(app));
+route(app)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

@@ -9,4 +9,4 @@ async function Connect() {
     }
 }
 
-export default { Connect };
+export default Connect;
