@@ -4,13 +4,15 @@ import { mutipleMongooseToObject, singleMongooseToObject } from '../../utils/mon
 class MeController {
     // [GET] /me/courses
     async meCourses(req, res, next) {
+
         let coursesQuery = Course.find({})
 
-        // if (req.query.hasOwnProperty('_sort')) {
-        //     coursesQuery.sort({
-        //         [req.query.column]: req.query.type //số - chữ HOA - chữ thường
-        //     })
-        // }
+
+        if (req.query.hasOwnProperty('_sort')) {
+            coursesQuery.sort({
+                [req.query.column]: req.query.type //số - chữ HOA - chữ thường
+            })
+        }
 
         try {
             const [courses, deletedCount] = await Promise.all([

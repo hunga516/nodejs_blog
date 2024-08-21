@@ -6,7 +6,9 @@ class CoursesController {
     async index(req, res, next) {
         try {
             const courses = await Course.find({});
-            res.render("courses/courses", { courses: mutipleMongooseToObject(courses) });
+            res.render("courses/courses", {
+                courses: mutipleMongooseToObject(courses),
+            });
         } catch (error) {
             next(error);
         }

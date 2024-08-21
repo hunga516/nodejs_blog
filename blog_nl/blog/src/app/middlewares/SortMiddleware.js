@@ -4,12 +4,13 @@ function SortMiddleware(req, res, next) {
         type: "default"
     }
 
-    if (req.query.hasOwnProperty("_sort")) {
+    if (req.query.hasOwnProperty('_sort')) {
         res.locals._sort.enabled = true
         res.locals._sort.type = req.query.type
+        res.locals._sort.column = req.query.column
     }
 
-    next()
+    next();
 }
 
 export default SortMiddleware
