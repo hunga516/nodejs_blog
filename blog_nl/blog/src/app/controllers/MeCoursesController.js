@@ -30,6 +30,8 @@ class MeController {
 
     // [GET] /me/courses/edit/:id
     async meEditCourse(req, res, next) {
+        console.log(res.locals._sort);
+
         try {
             const course = await Course.findById({ _id: req.params.id }); //original method
             res.render('me/meEditCourse', {
