@@ -46,6 +46,8 @@ app.engine('hbs', engine({
     partialsDir: path.join(__dirname, 'resource', 'views', 'partials'),
     helpers: {
         sortable: function (field, sort) {
+            const currentType = field === sort.column ? sort.type : "default"
+
             const types = {
                 default: "desc",
                 desc: "asc",
@@ -58,12 +60,14 @@ app.engine('hbs', engine({
                 asc: "up"
             }
 
-            const type = types[sort.type]
-            const iconType = iconsType[sort.type]
+            const type = types[currentType] //or sort.type
+            const iconType = iconsType[currentType]
             return `
+                <span>
                 <a href="?_sort&column=${field}&type=${type}">
                     ${icons[iconType]}
                 </a>
+                </span>
                    `
         },
     }
