@@ -1,5 +1,6 @@
 import Course from '../models/Course.js'; // Đổi extension sang .js nếu cần
 import { mutipleMongooseToObject, singleMongooseToObject } from '../../utils/mongoose.js'; // Đổi extension sang .js nếu cần
+import mongoose from 'mongoose';
 
 class CoursesController {
     // [GET] /courses
@@ -32,15 +33,24 @@ class CoursesController {
 
     // [POST] /courses/store
     async store(req, res, next) {
+        const session = await mongoose.startSession()
+        session.startTransaction()
+
         try {
             const course = req.body;
+
             if (course.images === '') {
                 course.images = undefined;
             }
-            await Course.create(course);
+
+            const newCourse = await Course.create([course], { session });
+            await session.commitTransaction()
             res.redirect('/me/courses');
         } catch (error) {
+            await session.abortTransaction()
             next(error);
+        } finally {
+            session.endSession()
         }
     }
 
